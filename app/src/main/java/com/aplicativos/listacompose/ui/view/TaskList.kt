@@ -2,6 +2,8 @@ package com.aplicativos.listacompose.ui.view
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -14,6 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.aplicativos.listacompose.R
+import com.aplicativos.listacompose.itemlist.ItemTask
+import com.aplicativos.listacompose.model.Tarefa
 import com.aplicativos.listacompose.ui.theme.Black
 import com.aplicativos.listacompose.ui.theme.White
 
@@ -44,7 +48,7 @@ fun TaskList(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                          navController.navigate("TaskSave")
+                    navController.navigate("TaskSave")
                 },
                 backgroundColor = Color.Gray
             ) {
@@ -57,5 +61,33 @@ fun TaskList(
             }
         }
     ) {
+        val listaTarefas: MutableList<Tarefa> = mutableListOf(
+            Tarefa(
+                tarefa = "Jogar Futebol",
+                descricao = "Quadrão do Corinthians",
+                prioridade = 0
+            ),
+            Tarefa(
+                tarefa = "Ir ao Mercado",
+                descricao = "Assai",
+                prioridade = 1
+            ),
+            Tarefa(
+                tarefa = "Ir a Igreja",
+                descricao = "Tocar com o pessoal",
+                prioridade = 2
+            ),
+            Tarefa(
+                tarefa = "Sair com a Esposa",
+                descricao = "Jantar Juntos.",
+                prioridade = 3
+            )
+        )
+
+        LazyColumn {
+            itemsIndexed(listaTarefas) { position, _ ->
+                ItemTask(position, listaTarefas)
+            }
+        }
     }
 }
