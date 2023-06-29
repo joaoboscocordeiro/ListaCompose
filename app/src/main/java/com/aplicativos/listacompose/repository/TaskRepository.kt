@@ -18,4 +18,8 @@ class TasksRepository {
     fun getAllTasks(): Flow<MutableList<Tarefa>> {
         return dataSource.getAllTasks()
     }
+
+    fun deleteTask(task: String) {
+        dataSource.deleteTask(task)
+    }
 }

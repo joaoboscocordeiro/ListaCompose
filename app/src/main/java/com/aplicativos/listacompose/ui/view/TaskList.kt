@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -34,6 +35,7 @@ fun TaskList(
 ) {
 
     val tasksRepository = TasksRepository()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -72,7 +74,7 @@ fun TaskList(
         LazyColumn {
             itemsIndexed(listTask) { position, _ ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    ItemTask(position = position, listTasks = listTask)
+                    ItemTask(position = position, listTasks = listTask, context = context, navController = navController)
                 }
             }
         }

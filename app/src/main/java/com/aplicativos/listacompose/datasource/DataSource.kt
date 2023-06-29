@@ -43,4 +43,10 @@ class DataSource {
             }
         return allTask
     }
+
+    fun deleteTask(task: String) {
+        db.collection("tarefas").document(task).delete()
+            .addOnCompleteListener {  }
+            .addOnFailureListener {  }
+    }
 }

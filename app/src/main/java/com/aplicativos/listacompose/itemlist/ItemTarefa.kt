@@ -1,6 +1,9 @@
 package com.aplicativos.listacompose.itemlist
 
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,23 +13,25 @@ import androidx.compose.material.Card
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 import com.aplicativos.listacompose.R
 import com.aplicativos.listacompose.model.Tarefa
+import com.aplicativos.listacompose.repository.TasksRepository
 import com.aplicativos.listacompose.ui.theme.RadioButtonGreenSelected
 import com.aplicativos.listacompose.ui.theme.RadioButtonRedSelected
 import com.aplicativos.listacompose.ui.theme.RadioButtonYellowSelected
 import com.aplicativos.listacompose.ui.theme.ShapeCardPriority
 import com.aplicativos.listacompose.ui.theme.White
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Created by João Bosco on 26/06/2023.
@@ -36,12 +41,33 @@ import com.aplicativos.listacompose.ui.theme.White
 @Composable
 fun ItemTask(
     position: Int,
-    listTasks: MutableList<Tarefa>
+    listTasks: MutableList<Tarefa>,
+    context: Context,
+    navController: NavController
 ) {
 
     val titleTask = listTasks[position].tarefa
     val descTask = listTasks[position].descricao
     val priority = listTasks[position].prioridade
+
+    val scope = rememberCoroutineScope()
+    val repository = TasksRepository()
+
+    fun dialogDelete() {
+        val alertDialog = AlertDialog.Builder(context)
+        alertDialog.setTitle("Deletar Tarefa")
+            .setMessage("Deseja deletar tarefa ?")
+            .setPositiveButton("Sim") { _, _ ->
+                repository.deleteTask(titleTask.toString())
+                scope.launch(Dispatchers.Main) {
+                    listTasks.removeAt(position)
+                    navController.navigate("TaskList")
+                    Toast.makeText(context, "Sucesso ao deletar tarefa.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Não") { _, _ -> }
+            .show()
+    }
 
     val priorityLevel: String = when (priority) {
         0 -> "Sem Prioridade"
@@ -50,7 +76,7 @@ fun ItemTask(
         else -> "Prioridade Alta"
     }
 
-    val color = when(priority) {
+    val color = when (priority) {
         0 -> Color.Black
         1 -> RadioButtonGreenSelected
         2 -> RadioButtonYellowSelected
@@ -79,8 +105,7 @@ fun ItemTask(
                 modifier = Modifier.constrainAs(txtTitle) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start, margin = 10.dp)
-                },
-                fontSize = 18.sp, color = RadioButtonRedSelected, style = TextStyle(fontStyle = FontStyle.Italic)
+                }
             )
 
             Text(
@@ -115,7 +140,9 @@ fun ItemTask(
             }
 
             IconButton(
-                onClick = {},
+                onClick = {
+                    dialogDelete()
+                },
                 modifier = Modifier.constrainAs(btnDelete) {
                     top.linkTo(txtDescription.bottom, margin = 10.dp)
                     start.linkTo(cardPriority.end, margin = 30.dp)
