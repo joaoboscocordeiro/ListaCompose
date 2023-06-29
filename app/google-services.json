@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1046024774486",
+    "project_id": "listacompose",
+    "storage_bucket": "listacompose.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046024774486:android:c6f515805f64a7a017ecf7",
+        "android_client_info": {
+          "package_name": "com.aplicativos.listacompose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046024774486-kvj5cjn7gfmplk180r8gnrl18pboi8bc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGCab6Yus_U9d_kF1E46qEQOZ2J-_XWkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046024774486-kvj5cjn7gfmplk180r8gnrl18pboi8bc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
