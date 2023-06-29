@@ -1,5 +1,7 @@
 package com.aplicativos.listacompose.itemlist
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,8 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.aplicativos.listacompose.R
 import com.aplicativos.listacompose.model.Tarefa
@@ -27,6 +32,7 @@ import com.aplicativos.listacompose.ui.theme.White
  * Created by João Bosco on 26/06/2023.
  */
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun ItemTask(
     position: Int,
@@ -73,7 +79,8 @@ fun ItemTask(
                 modifier = Modifier.constrainAs(txtTitle) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start, margin = 10.dp)
-                }
+                },
+                fontSize = 18.sp, color = RadioButtonRedSelected, style = TextStyle(fontStyle = FontStyle.Italic)
             )
 
             Text(

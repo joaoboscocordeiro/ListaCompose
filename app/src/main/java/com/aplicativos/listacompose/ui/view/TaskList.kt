@@ -1,6 +1,7 @@
 package com.aplicativos.listacompose.ui.view
 
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -9,6 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -17,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.aplicativos.listacompose.R
 import com.aplicativos.listacompose.itemlist.ItemTask
-import com.aplicativos.listacompose.model.Tarefa
+import com.aplicativos.listacompose.repository.TasksRepository
 import com.aplicativos.listacompose.ui.theme.Black
 import com.aplicativos.listacompose.ui.theme.White
 
@@ -30,6 +32,9 @@ import com.aplicativos.listacompose.ui.theme.White
 fun TaskList(
     navController: NavController
 ) {
+
+    val tasksRepository = TasksRepository()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -61,32 +66,14 @@ fun TaskList(
             }
         }
     ) {
-        val listaTarefas: MutableList<Tarefa> = mutableListOf(
-            Tarefa(
-                tarefa = "Jogar Futebol",
-                descricao = "Quadrão do Corinthians",
-                prioridade = 0
-            ),
-            Tarefa(
-                tarefa = "Ir ao Mercado",
-                descricao = "Assai",
-                prioridade = 1
-            ),
-            Tarefa(
-                tarefa = "Ir a Igreja",
-                descricao = "Tocar com o pessoal",
-                prioridade = 2
-            ),
-            Tarefa(
-                tarefa = "Sair com a Esposa",
-                descricao = "Jantar Juntos.",
-                prioridade = 3
-            )
-        )
+
+        val listTask = tasksRepository.getAllTasks().collectAsState(mutableListOf()).value
 
         LazyColumn {
-            itemsIndexed(listaTarefas) { position, _ ->
-                ItemTask(position, listaTarefas)
+            itemsIndexed(listTask) { position, _ ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    ItemTask(position = position, listTasks = listTask)
+                }
             }
         }
     }
